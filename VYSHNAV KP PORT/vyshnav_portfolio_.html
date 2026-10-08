@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vyshnav KP — AI Portfolio</title>
+<style>
+:root{
+  --bg:#08090b;--panel:#101216;--panel2:#15171c;--text:#f5f5f5;
+  --muted:#9297a3;--line:#252832;--accent:#c9ff4a;--accent2:#9fd52f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 75% 10%,#20251a 0,transparent 28%),var(--bg);color:var(--text);min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr;max-width:1500px;margin:auto}
+.sidebar{border-right:1px solid var(--line);padding:28px 20px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;margin-bottom:48px}
+.logo-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 20px #c9ff4a88}
+.nav{display:flex;flex-direction:column;gap:8px}
+.nav button{background:transparent;border:0;color:var(--muted);text-align:left;padding:12px 14px;border-radius:10px}
+.nav button:hover,.nav button.active{background:#171a1e;color:var(--text)}
+.side-bottom{margin-top:auto;color:var(--muted);font-size:12px;line-height:1.7}
+.main{min-width:0}
+.topbar{height:74px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;background:#08090bdd;backdrop-filter:blur(18px);z-index:5}
+.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.online{width:7px;height:7px;background:var(--accent);border-radius:50%}
+.contact{border:1px solid var(--line);background:var(--panel);color:white;border-radius:9px;padding:9px 14px;text-decoration:none;font-size:13px}
+.chat{max-width:900px;margin:auto;padding:72px 28px 40px}
+.hero{text-align:center;margin-bottom:52px}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid #343b2b;background:#11150d;color:var(--accent);padding:7px 11px;border-radius:99px;font-size:12px;margin-bottom:20px}
+.hero h1{font-size:clamp(42px,7vw,78px);letter-spacing:-.055em;line-height:.95;margin-bottom:18px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);max-width:620px;margin:auto;line-height:1.7;font-size:16px}
+.chat-window{background:rgba(16,18,22,.86);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 30px 80px #0008}
+.chat-head{height:62px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 18px;gap:10px}
+.avatar{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#0b0c0d;display:grid;place-items:center;font-weight:900}
+.botname{font-size:13px;font-weight:700}.sub{font-size:11px;color:var(--muted)}
+.messages{padding:24px;min-height:360px;max-height:560px;overflow:auto}
+.msg{display:flex;gap:10px;margin:18px 0;animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.user{justify-content:flex-end}.bubble{max-width:75%;padding:13px 15px;border-radius:16px;background:#1a1d23;color:#e9e9e9;line-height:1.6;font-size:14px}
+.user .bubble{background:var(--accent);color:#0a0b0c;border-bottom-right-radius:5px}
+.bot .bubble{border-bottom-left-radius:5px}
+.quick{display:flex;flex-wrap:wrap;gap:8px;padding:0 24px 18px}
+.quick button{background:transparent;border:1px solid var(--line);color:#c9cbd0;border-radius:99px;padding:9px 12px;font-size:12px}
+.quick button:hover{border-color:var(--accent);color:var(--accent)}
+.inputbar{padding:14px;border-top:1px solid var(--line);display:flex;gap:10px}
+.inputbar input{flex:1;background:#0b0d10;border:1px solid var(--line);outline:none;color:white;border-radius:12px;padding:13px 14px}
+.inputbar input:focus{border-color:#4d542f}
+.send{width:45px;border:0;border-radius:12px;background:var(--accent);color:#08090b;font-weight:900}
+.section{padding:100px 34px;max-width:1050px;margin:auto;border-top:1px solid var(--line)}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:32px}
+.kicker{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.18em}
+.section h2{font-size:38px;letter-spacing:-.04em;margin-top:7px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:22px;transition:.25s}
+.card:hover{transform:translateY(-3px);border-color:#41452f}.project-link{cursor:pointer}.project-link h3{transition:.2s}.project-link:hover h3{color:var(--accent)}
+.card h3{font-size:17px;margin-bottom:8px}.card p,.card li{color:var(--muted);font-size:13px;line-height:1.7}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.tag{padding:6px 9px;border:1px solid var(--line);border-radius:7px;color:#c8cad0;font-size:11px}
+.timeline{display:grid;gap:14px}
+.role{display:grid;grid-template-columns:150px 1fr;gap:22px;padding:24px 0;border-bottom:1px solid var(--line)}
+.role:last-child{border-bottom:0}.date{color:var(--muted);font-size:12px}.role h3{font-size:18px;margin-bottom:4px}.company{color:var(--accent);font-size:13px;margin-bottom:10px}.role ul{padding-left:18px}
+.footer{padding:55px 34px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:12px}
+.footer strong{color:white}
+@media(max-width:800px){
+ .app{display:block}.sidebar{display:none}.topbar{padding:0 18px}.contact{padding:7px 10px;font-size:12px}.chat{padding:50px 16px 30px}.section{padding:70px 18px}.grid{grid-template-columns:1fr}.role{grid-template-columns:1fr;gap:7px}.hero h1{font-size:52px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo"><span class="logo-dot"></span> VYSHNAV.KP</div>
+  <nav class="nav">
+    <button class="active" onclick="go('home')">AI Portfolio</button>
+    <button onclick="go('about')">About</button>
+    <button onclick="go('experience')">Experience</button>
+    <button onclick="go('projects')">Projects</button>
+    <button onclick="go('skills')">Skills</button>
+  </nav>
+  <div class="side-bottom">UI/UX Designer<br>Product Designer<br>Figma Specialist<br><br>Calicut, Kerala</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto"><a class="contact" href="https://www.linkedin.com/in/vyshnavkp/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a class="contact" href="VYSHNAV_KP.pdf" target="_blank" rel="noopener noreferrer">View Resume ↗</a></div>
+</header>
+
+<section class="chat" id="home">
+  <div class="hero">
+    <div class="eyebrow">✦ AI-POWERED PORTFOLIO</div>
+    <h1>Meet <span>Vyshnav.</span></h1>
+    <p>Ask my portfolio anything about my design process, experience, skills, or projects.</p>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-head">
+      <div class="avatar">V</div>
+      <div><div class="botname">Vyshnav AI</div><div class="sub">Portfolio assistant · Ready to answer</div></div>
+    </div>
+    <div class="messages" id="messages">
+      <div class="msg bot"><div class="avatar">V</div><div class="bubble">Hi! I'm Vyshnav's portfolio assistant. 👋<br><br>Ask me about his <b>experience, design skills, projects, or approach to UX</b>.</div></div>
+    </div>
+    <div class="quick">
+      <button onclick="ask('Who is Vyshnav?')">Who is Vyshnav?</button>
+      <button onclick="ask('Tell me about his experience')">Experience</button>
+      <button onclick="ask('What are his skills?')">Skills</button>
+      <button onclick="ask('Show me his projects')">Projects</button>
+      <button onclick="ask('Why should I hire him?')">Why hire him?</button>
+    </div>
+    <form class="inputbar" onsubmit="send(event)">
+      <input id="input" placeholder="Ask me anything about Vyshnav..." autocomplete="off">
+      <button class="send">↑</button>
+    </form>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="section-title"><div><div class="kicker">01 — About</div><h2>Designer who solves problems.</h2></div></div>
+  <div class="card"><p style="font-size:15px">Creative and detail-oriented UI/UX Designer with internship experience at Zoople Technologies and KNOVISTA Technologies. Skilled in user research, wireframing, user flows, interaction design, design systems, responsive web design, usability testing, and high-fidelity prototyping using Figma. Passionate about solving real user problems through research-driven design.</p></div>
+</section>
+
+<section class="section" id="experience">
+  <div class="section-title"><div><div class="kicker">02 — Experience</div><h2>Design in practice.</h2></div></div>
+  <div class="timeline">
+    <div class="role"><div class="date">APR 2026 — JUL 2026</div><div><h3>UI/UX Designer Intern</h3><div class="company">KNOVISTA Technologies · Kochi</div><ul><li>Designed responsive web and mobile interfaces using user-centered design principles.</li><li>Created wireframes, high-fidelity UI screens, and interactive prototypes in Figma.</li><li>Conducted user research and competitor analysis.</li><li>Built reusable design systems and UI components.</li><li>Worked closely with product teams to deliver intuitive digital solutions.</li></ul></div></div>
+    <div class="role"><div class="date">SEP 2025 — JAN 2026</div><div><h3>UI/UX Designer Intern</h3><div class="company">Zoople Technologies · Calicut</div><ul><li>Designed user-friendly web and mobile interfaces.</li><li>Developed wireframes and clickable prototypes in Figma.</li><li>Assisted in UX research and usability improvements.</li><li>Collaborated with developers for accurate UI implementation.</li><li>Improved layouts, typography, and interaction flows.</li></ul></div></div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="section-title"><div><div class="kicker">03 — Selected Work</div><h2>Projects worth exploring.</h2></div></div>
+  <div class="grid">
+    <a class="card project-link" href="https://www.behance.net/gallery/237337793/HDFC-Bank-website-redesigning-project" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block"><h3>HDFC Bank Website Redesign ↗</h3><p>A website redesign project focused on improving usability, information structure, and the overall digital experience.</p><div class="tags"><span class="tag">UX Research</span><span class="tag">Wireframes</span><span class="tag">UI Design</span></div></a>
+    <a class="card project-link" href="https://www.behance.net/gallery/244816809/SMART-HOME-PROJECT" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block"><h3>Smart Home App ↗</h3><p>A mobile experience designed around intuitive smart-device control, clear status visibility, and simple interactions.</p><div class="tags"><span class="tag">Mobile UX</span><span class="tag">UI</span><span class="tag">Prototype</span></div></a>
+    <a class="card project-link" href="https://www.behance.net/gallery/253670003/Kagemiya-cafe-bistro-application-design" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block"><h3>Kagemiya Café Mobile App ↗</h3><p>A café-focused mobile app concept designed to make browsing and interacting with a café experience more intuitive.</p><div class="tags"><span class="tag">Product Design</span><span class="tag">Mobile App</span></div></a>
+    <div class="card"><h3>Clothing Brand App</h3><p>A fashion-focused digital product concept exploring modern browsing and shopping interactions.</p><div class="tags"><span class="tag">UI Design</span><span class="tag">E-commerce</span></div></div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="section-title"><div><div class="kicker">04 — Toolkit</div><h2>How I design.</h2></div></div>
+  <div class="grid">
+    <div class="card"><h3>UX Design</h3><div class="tags"><span class="tag">User Research</span><span class="tag">Personas</span><span class="tag">Journey Mapping</span><span class="tag">Information Architecture</span><span class="tag">Wireframing</span><span class="tag">User Flow</span><span class="tag">Interaction Design</span><span class="tag">Usability Testing</span><span class="tag">Heuristic Evaluation</span></div></div>
+    <div class="card"><h3>UI Design</h3><div class="tags"><span class="tag">Mobile App Design</span><span class="tag">Web Design</span><span class="tag">Dashboard Design</span><span class="tag">Component Library</span><span class="tag">Auto Layout</span><span class="tag">Typography</span><span class="tag">Color Theory</span><span class="tag">Responsive Design</span><span class="tag">Accessibility</span></div></div>
+    <div class="card"><h3>Tools & Development</h3><div class="tags"><span class="tag">Figma</span><span class="tag">FigJam</span><span class="tag">Notion</span><span class="tag">Adobe Illustrator</span><span class="tag">Adobe Photoshop</span><span class="tag">HTML</span><span class="tag">CSS</span></div></div>
+    <div class="card"><h3>Education</h3><p><b style="color:#fff">Bachelor of Commerce (B.Com)</b><br>Global Arts and Science College, Calicut<br>Calicut University</p></div>
+  </div>
+</section>
+
+<footer class="footer"><strong>Vyshnav KP</strong> · UI/UX Designer · Product Designer · Figma Specialist<br><br>Calicut, Kerala · <a style="color:var(--accent)" href="mailto:kpvyshnav130@gmail.com">kpvyshnav130@gmail.com</a> · 9037423776<br><br><a style="color:var(--accent)" href="https://www.linkedin.com/in/vyshnavkp/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a style="color:var(--accent)" href="VYSHNAV_KP.pdf" target="_blank" rel="noopener noreferrer">View Resume</a></footer>
+</main>
+</div>
+
+<script>
+const answers = {
+  who: "Vyshnav KP is a UI/UX Designer, Product Designer and Figma Specialist based in Calicut, Kerala. He focuses on user-centered design, research-driven problem solving and creating intuitive digital products.",
+  experience: "Vyshnav has internship experience at KNOVISTA Technologies in Kochi (April–July 2026) and Zoople Technologies in Calicut (September 2025–January 2026). His work included responsive interfaces, wireframes, prototypes, UX research, competitor analysis, design systems and developer collaboration.",
+  skills: "His UX skills include user research, personas, journey mapping, information architecture, wireframing, user flows, interaction design, usability testing and heuristic evaluation. His tools include Figma, FigJam, Notion, Illustrator, Photoshop, HTML and CSS.",
+  projects: "His selected projects are HDFC Bank Website Redesign, Smart Home App, Kagemiya Café Mobile App and Clothing Brand App.",
+  hire: "Vyshnav brings a mix of UX thinking and UI execution. He can research user needs, structure experiences, create polished Figma designs and collaborate with developers for accurate implementation."
+};
+
+function reply(text){
+  const box=document.getElementById('messages');
+  const m=document.createElement('div');m.className='msg bot';
+  m.innerHTML='<div class="avatar">V</div><div class="bubble">'+text+'</div>';
+  box.appendChild(m);box.scrollTop=box.scrollHeight;
+}
+function user(text){
+  const box=document.getElementById('messages');
+  const m=document.createElement('div');m.className='msg user';
+  m.innerHTML='<div class="bubble">'+text+'</div>';box.appendChild(m);box.scrollTop=box.scrollHeight;
+}
+function ask(q){
+  user(q);
+  let a=answers.who;
+  const x=q.toLowerCase();
+  if(x.includes('experience'))a=answers.experience;
+  else if(x.includes('skill')||x.includes('tool'))a=answers.skills;
+  else if(x.includes('project')||x.includes('work'))a=answers.projects;
+  else if(x.includes('hire'))a=answers.hire;
+  setTimeout(()=>reply(a),350);
+}
+function send(e){
+  e.preventDefault();
+  const input=document.getElementById('input');const q=input.value.trim();if(!q)return;
+  input.value='';ask(q);
+}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+</script>
+</body>
+</html>
